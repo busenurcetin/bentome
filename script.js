@@ -1,3 +1,6 @@
+// Config dosyasından sosyal medya verilerini import et
+import socialMediaConfig from './config.js';
+
 // Sürükle-bırak fonksiyonları
 
 const draggables = document.querySelectorAll('[draggable="true"]');
@@ -44,3 +47,32 @@ function getDragAfterElement(container, y) {
     }
   }, {}).element;
 }
+
+// Linkleri güncelleyen fonksiyon
+function updateSocialLinks() {
+    const linksSection = document.querySelector('.links');
+    
+    // Mevcut linkleri temizle
+    linksSection.innerHTML = '';
+    
+    // Her sosyal medya için yeni link oluştur
+    Object.entries(socialMediaConfig).forEach(([platform, data]) => {
+        const linkElement = document.createElement('a');
+        linkElement.href = data.url;
+        linkElement.className = `link-item ${platform}`;
+        linkElement.target = '_blank';
+        
+        const iconElement = document.createElement('i');
+        iconElement.className = `${data.icon} icon`;
+        
+        const spanElement = document.createElement('span');
+        spanElement.textContent = data.text;
+        
+        linkElement.appendChild(iconElement);
+        linkElement.appendChild(spanElement);
+        linksSection.appendChild(linkElement);
+    });
+}
+
+// Sayfa yüklendiğinde linkleri güncelle
+document.addEventListener('DOMContentLoaded', updateSocialLinks);
